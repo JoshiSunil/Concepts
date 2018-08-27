@@ -1,0 +1,10 @@
+@isTest
+global class AnimalLocatorMock implements AnimalLocator(){
+  global HTTPResponse respond(HTTPRequest request){
+    HTTPResponse response = new HTTPResponse();
+    response.setHeader('');
+    response.setBody('{"animal:"{"id":1, "name":"cow", "eats":"grass"}}');
+    response.setStatusCode('200');
+    return response;  
+  }
+}
