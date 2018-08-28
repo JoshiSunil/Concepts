@@ -1,0 +1,43 @@
+@RestResource(urlMapping='/UserLogin/*')
+global class REST_UserLogin {
+
+    @HttpGet
+    global static List<External_Login__c> getLogins () {
+        List<External_Login__c> externalLogins = [SELECT Id, CreatedDate, Contact__r.Email, Session_Length__c FROM External_Login__c];
+        return externalLogins;
+    }
+    
+    @HttpPost
+    global static void createNewLoginRecord (String systemName, String userEmail, Integer sessionLength) {
+        Contact c = null;
+        try {
+            c = [SELECT Id, Email FROM Contact WHERE Email =: userEmail].get(0);
+            External_Login__c newLogin = new External_Login__c();
+            newLogin.System__c = systemName;
+            newLogin.Contact__c = c.Id;
+            newLogin.Session_Length__c = sessionLength;
+            insert newLogin;
+            RestContext.response.responseBody = Blob.valueOf('Success: Record created with ID ' + newLogin.Id);
+        } catch (Exception e) {
+            RestContext.response.responseBody = Blob.valueOf('Error: ' + e.getMessage());
+        }
+    }
+    
+    @HttpPut
+    global static void updateLoginRecord () {
+        // Leaving this empty or removing altogether -- not useful in this context. 
+    }
+    
+    @HttpDelete
+    global static void deleteLoginRecordById () {
+        String paramId = RestContext.request.params.get('id');
+        try {
+            External_Login__c loginToDelete = [SELECT Id FROM External_Login__c WHERE Id =: paramId];
+            delete loginToDelete;
+            RestContext.response.responseBody = Blob.valueOf('Success: Record deleted.');
+        } catch (Exception e) {
+            RestContext.response.responseBody = Blob.valueOf('Error: ' + e.getMessage());
+        }
+    }
+    
+}
