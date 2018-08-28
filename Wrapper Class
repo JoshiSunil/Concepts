@@ -1,0 +1,60 @@
+public class cWrapperExample 
+{
+    public List<wrapperAccountCheckBox> LstWrp{get;set;}
+    public List<wrapperAccountCheckBox> LstWrp_Selected{get;set;}
+    public cWrapperExample()
+    {
+        LstWrp=new List<wrapperAccountCheckBox>();
+        LstWrp_Selected=new lIst<wrapperAccountCheckBox>();
+        List<Account> accLst=new List<Account>([SELECT Id,Name,AccountNumber,Active__c,CustomerPriority__c,Email__c FROM Account]);
+        for(integer i=0;i<accLst.size();i++)
+        {
+        boolean check=true;
+        if(accLst[i].CustomerPriority__c==null)
+        {
+            check=false;
+        }
+            LstWrp.add(new wrapperAccountCheckBox(check,String.ValueOf((i+1)),accLst[i]));
+        }
+    }
+    
+    public Pagereference RedirectSelectedAcc()
+    {
+    LstWrp_Selected=new List<wrapperAccountCheckBox>();
+        for(wrapperAccountCheckBox wrp:LstWrp)
+        {
+            if(wrp.checkbox==true)
+            {
+            LstWrp_Selected.add(wrp);
+            }
+        }
+        PageReference p=Page.WrapperExample_View;        
+        return p;
+    }
+    
+    //--------------------------------------------------------------
+    public class wrapperAccountCheckBox
+    {
+        public boolean checkbox{get;set;}
+        public String SLNo{get;set;}
+        public Account acc{get;set;}
+        
+        public wrapperAccountCheckBox()
+        {
+        
+        }
+        public wrapperAccountCheckBox(boolean c,String s,Account a)
+        {
+            this.checkbox=c;
+            this.SLNo=s;
+            this.acc=a;
+        }
+        public wrapperAccountCheckBox(String s,Account a)
+        {
+            this.SLNo=s;
+            this.acc=a;
+            checkbox=true;
+        }
+    }
+    //---------------------------------------------------------------
+}
