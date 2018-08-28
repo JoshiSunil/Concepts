@@ -1,0 +1,20 @@
+function save() {
+                // ControllerName.methodName(attributes, callback method name)
+               
+                ApexRemoteControllerExample.save(addedProductArr,deletedProductArr, saeCallback);
+            }
+            
+             // The Call back method gets result from controllers method. 
+            function saveCallback(result, event) {
+                if(event.status) {
+
+                    alert("Saved succesfully ");
+                    console.log(result);
+                    
+                    for(var i=0; i< result.length; i++) {
+                          /** Do Something Here **/
+                    }
+                   
+                }
+
+            }
