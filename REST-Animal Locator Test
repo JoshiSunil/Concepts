@@ -1,0 +1,10 @@
+@isTest
+
+private class AnimalLocatorTest{
+  @isTest static void AnimalLocatorMock1(){
+    test.SetMock(HTTPCalloutMock.class, new AnimalLocatorMock());
+    String result = AnimalLocator.getAnimalNameById(3);
+    String expected = 'Cow';
+    System.assert(result, expected);
+  }
+}
