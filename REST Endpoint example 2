@@ -39,5 +39,5 @@ global class REST_UserLogin {
             RestContext.response.responseBody = Blob.valueOf('Error: ' + e.getMessage());
         }
     }
-    
+    //http://sfdc.guide/posts/defining-custom-rest-endpoints-with-apex/   
 }
