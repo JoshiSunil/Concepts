@@ -1,0 +1,27 @@
+ var element = 'String';
+ 
+ //Declaration
+ **Empty Array**
+ var array_name = [];
+ 
+ **Initialized**
+ var array_name = [item1, item2, ...]; 
+ 
+ 
+ //Insert Elements
+ arr.push(element);
+ 
+ //Remove Elements
+ remove(arr, element);
+ 
+ //functions
+ arr.length
+ 
+ //Access the elements by Index number
+ 
+var item1 =  array_name[0]
+console.log(item1); //Result : item1
+
+
+//Wonderful tutorial with all methods: 
+https://www.w3schools.com/js/js_arrays.asp
