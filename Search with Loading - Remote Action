@@ -1,0 +1,144 @@
+// Remote Action methods must be declared in controller
+
+@RemoteAction
+    public static List<ObjectName> getSearchResults(String searchKeyword) {
+
+        List<String> fields = new List<String>();
+        
+        String whereString = '';
+        if(!String.isBlank(searchKeyword)) {
+            whereString = 'Name LIKE \'%'+searchKeyword+'%\'';
+        }
+
+        String queryString = createQueryString('ObjectName', fields, whereString);
+        List<ObjectName> searchResults = Database.query(queryString);
+
+        System.debug(searchResults);
+        return searchResults;
+    }
+    
+    // createQueryString Method
+    
+    public static String createQueryString(String table, List<String> fields, String whereString) {
+        String FUNC_STR = CLASS_STR + 'createQueryString > ';
+
+        String query = 'SELECT ' ;
+        for(String field: fields) {
+            query += field + ',';
+        }
+        query = query.substring(0, query.length() - 1);
+        query += ' FROM '+ table;
+
+        if(!String.isBlank(whereString)) {
+            query += ' WHERE '+ whereString;
+        }
+
+        System.debug(FUNC_STR + query);
+        return query;
+    }
+    
+    // JavaScript Remote Action Calling and CallBack methods
+    function search() {
+                searchKeyword = $("#search_bar").val();
+                ControllerName.getSearchResults(searchKeyword, searchResultsCallback); //searchResultsCallback is the callback method name located in JS
+                $( "#search_results_div" ).dialog("open"); // Opens Search Dialog box to display results.. Currently its will be blank
+            }
+    //JavaScript Callback method 
+    function searchResultsCallback(result, event) {
+                // event provides status if success or failed
+                if(event.status) {
+                    var innerHtml = "";
+                    for(var i=0; i< result.length; i++) {
+                        innerHtml += "<tr><td>"+ result[i].ObjectName+"</td>"; // First Column
+                        innerHtml += "<td>"+ result[i].FieldName+"</td>";  // Second Column
+                        innerHtml += "<td> <button type='button' onclick='searchAddOnclick(this)' id='"+result[i].Id +"'>  <span id='icon_"+result[i].Id+"' class='glyphicon glyphicon-plus'/> &nbsp; Add </button></td></tr>"; //Third Column with Add button
+                    }
+                    $("#search_results_tbody").html(innerHtml); // Inserts Data under each column
+
+                    $( "#loader" ).hide(); hide the loader gif
+                    $( "#search_results_table" ).show(); //displays the dialog with results upon completion                    
+                }
+            }
+    
+    **** Loader gif Dialog and other requirements ****
+    
+    // Dialog 
+    $( "#search_results_div" ).dialog({
+                    modal:true,
+                    autoOpen: false,
+                    width: 800,
+                    minWidth: 650,
+                    draggable : false,
+                    height : 350,
+                    title : 'Search Results',
+                    buttons: {
+                        'Add Products': function() {
+                          addSelectedProducts();
+                          $( this ).dialog( "close" );
+                          
+                        }
+                    },
+                    close: function( event, ui ) {
+                        searchAddedProductsArr = [];
+                        $( "#search_results_table" ).hide();
+                        $( "#loader" ).show();
+                    }
+                });
+                $( "#search_results_div" ).show();
+                
+       // CSS 
+       
+        #loader {
+                border: 16px solid #f3f3f3; /* Light grey */
+                border-top: 16px solid #4596BC; /* Blue */
+                border-radius: 50%;
+                width: 80px;
+                height: 80px;
+                animation: spin 1s linear infinite;
+                float: left;
+                position: relative;
+                top: 75px;
+                left: 340px;
+            }
+            
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            
+        // Table display
+        
+        <div id="search_results_div" style="display: none">
+            <div id="loader" > </div>
+            <table id="search_results_table"  class="search_table" style="width:100%; display: none">
+                <thead>
+                    <tr>
+                        <apex:repeat value="{!searchResultFieldNames}" var="fieldName">
+                            <th>{!fieldName}</th>
+                        </apex:repeat>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody id="search_results_tbody">
+
+                </tbody>
+            </table>    
+        </div>
+        
+        
+      // Search Result Column Names Controller method
+      public static List<String> searchResultFieldNames {
+        get {
+            if ( searchResultFieldNames == null ) {
+                searchResultFieldNames = new List<String>();
+                searchResultFieldNames.add('Column 1');
+                searchResultFieldNames.add('Column 2');
+            }
+
+            return searchResultFieldNames;
+        }
+        set;
+    }
+    
+    **** The Results are added by search_results_tbody through callBackMethod for search 
