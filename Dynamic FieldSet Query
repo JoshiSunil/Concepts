@@ -1,0 +1,50 @@
+
+
+
+// Getting API names for fields from FieldSet
+
+public static List<String> ObjectFieldApiNames {
+        get {
+            if ( ObjectFieldApiNames == null ) {
+                List<Schema.FieldSetMember> fields = SObjectType.Object__c.FieldSets.FieldSetName.getFields();
+                ObjectFieldApiNames = getFieldApiNames(fields);
+            }
+
+            return ObjectFieldApiNames;
+        }
+        set;
+    }
+
+  //Method to return field Api Names  
+    public static List<String> getFieldApiNames(List<Schema.FieldSetMember> fields) {
+        String FUNC_STR = CLASS_STR + 'getFieldApiNames > ';
+
+        List<String> apiNames = new List<String>();
+        for(Schema.FieldSetMember field : fields) {
+            if(field.getFieldPath()!=null){
+              apiNames.add(field.getFieldPath());
+            }
+        }
+
+       System.debug(FUNC_STR + apiNames);
+       return apiNames;
+    }
+  
+  
+  // Getting API Names for JavaScript
+  
+    public static String getFieldApiNamesForJS(List<Schema.FieldSetMember> fields) {
+        String FUNC_STR = CLASS_STR + 'getFieldApiNames > ';
+
+        List<String> apiNames = new List<String>();
+        for(Schema.FieldSetMember field : fields) {
+            if(field.getFieldPath()!=null){
+              apiNames.add(String.escapeSingleQuotes(field.getFieldPath()));
+            }
+        }
+
+       System.debug(FUNC_STR + apiNames);
+       String jsonString = JSON.serialize(apiNames);
+
+       return jsonString;
+    }
