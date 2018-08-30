@@ -60,6 +60,24 @@
                 }
             }
     
+    // Add button change upon click
+    function searchAddOnclick(button) {
+                var id = $(button).attr('id');
+                var okay_glyphicon = "glyphicon glyphicon-ok";
+                var plus_glyphicon = "glyphicon glyphicon-plus";
+
+                var span = $('#icon_'+id);
+
+                if(span.attr('class').includes('plus')) {
+                    span.attr('class', okay_glyphicon);
+                    searchAddedProductsArr.push(id);
+                } else {
+                    span.attr('class', plus_glyphicon);
+                    remove(searchAddedProductsArr, id);
+                }
+            }
+            
+            
     **** Loader gif Dialog and other requirements ****
     
     // Dialog 
