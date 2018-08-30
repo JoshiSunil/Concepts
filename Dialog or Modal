@@ -17,3 +17,59 @@ resizable	:     Boolean option that determines if the dialog is resizable
 closeOnEscape: 	Boolean option that determines if the dialog can be closed by pressing the Esc key
 modal:        	Boolean option that determines if the dialog is modal dialog. With modal dialog other items on the page will be disabled and cannot be interaced with until the dialog is closed
 autoOpen:	      Boolean option that determines if the dialog should open automatically upon initialization. If set to false, the dialog will stay hidden until the open() method is called
+
+
+**** Example ****
+
+// Dialog initialization
+ $('#cancelpopup').hide(); // Keeping this before declaration hides the dialog on page load
+$('#cancelpopup').dialog({
+                    title: "Warning",
+                    autoOpen: false,
+                    width: 800,
+                    height: 150,
+                    modal: true,
+                    buttons: {
+                        Yes: function(){
+                          cancel();
+                          $(this).dialog('close');
+                        },
+                        No:function(){
+                          $(this).dialog('close');
+                        }
+                    }
+                });
+                
+  // Method to show dialog on click of button
+function cancelClick(){
+                $("#cancelpopup").dialog('open');
+            }
+                      
+     
+//Add this div before end of body tag </body>            
+<div id='cancelpopup'>
+            Add the message to display on popup
+        </div>
+                
+ // Remote Action Cancel method on clicking Yes on dialog
+ 
+ function cancel() {
+                ControllerName.cancel(Id, cancelCallback); // Here 2nd argument is the name of callback method within JS
+            }
+
+  function cancelCallback(result, event) {
+      if(event.status) {
+          document.location ='/';   // this redirects the page to specified url
+      }
+  }
+
+// Controller Method
+@RemoteAction
+    public static void cancel(String Id) {
+        // Do Something here like Delete current quote or whatever. 
+    }
+
+
+        
+        
+        
