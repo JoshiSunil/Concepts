@@ -131,6 +131,54 @@
                 100% { transform: rotate(360deg); }
             }
             
+            #search_results_div {
+                height:300px;
+                overflow-y: scroll;
+            }
+            .search {
+                padding-left: 30px;
+                height: 30px;
+                width: 210 px;
+            }
+
+            .search input {
+              width: 250px;
+              height: 32px;
+
+              background: #fcfcfc;
+              border: 1px solid #aaa;
+              border-radius: 5px;
+              box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
+            }
+
+            .search input { text-indent: 32px;}
+            .search .fa-search { 
+              position: absolute;
+              top: 10px;
+              left: 10px;
+            }
+            .search_icon {
+                left:-175px;
+                cursor: pointer;
+            }
+
+            .search_table table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            .search_table th, td {
+                text-align: left;
+                padding: 8px;
+            }
+
+            .search_table tr:nth-child(even){background-color: #f2f2f2}
+
+            .search_table thead tr {
+                border-bottom: #4EAFA9 2px solid;
+            }
+
+            
         // Table display
         <apex:pageBlock >
            
