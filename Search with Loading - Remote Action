@@ -77,6 +77,13 @@
                 }
             }
             
+     // Invoke Search click action upon press of enter in text field
+     document.getElementById('search_bar').onkeypress = function(event) {
+                    if (event.keyCode == 13) {
+                        search();
+                    }
+                }
+            
             
     **** Loader gif Dialog and other requirements ****
     
@@ -125,7 +132,11 @@
             }
             
         // Table display
-        
+        <apex:pageBlock >
+           
+           <input type="text" id="search_bar" class="search" placeholder="Search"/><span onclick="search()" class="search_icon glyphicon glyphicon-search"/>
+
+        </apex:pageBlock>
         <div id="search_results_div" style="display: none">
             <div id="loader" > </div>
             <table id="search_results_table"  class="search_table" style="width:100%; display: none">
