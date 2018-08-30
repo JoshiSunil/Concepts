@@ -1,0 +1,23 @@
+public static String createQueryString(String table, List<String> fields, String whereString) {
+        String FUNC_STR = CLASS_STR + 'createQueryString > ';
+
+        String query = 'SELECT ' ;
+        for(String field: fields) {
+            query += field + ',';
+        }
+        query = query.substring(0, query.length() - 1);
+        query += ' FROM '+ table;
+
+        if(!String.isBlank(whereString)) {
+            query += ' WHERE '+ whereString;
+        }
+
+        System.debug(FUNC_STR + query);
+        return query;
+    }
+    
+    //Calling the method
+    
+       String queryString = createQueryString('ObjectName', FieldApiNames, 'Quote__c =: Id ');
+        
+       List<ObjectName> obj = Database.query(queryString);
